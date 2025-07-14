@@ -8,7 +8,8 @@
 /* —— body + fonts —— */
 body {
   font-family: "Montserrat", Arial, Helvetica, sans-serif;
-  color: #333;
+  color: #000000;
+  background: #FFFFFF;
   display: flex;
   justify-content: center;
 }
@@ -24,10 +25,20 @@ body {
   padding-top: 50px;
 }
 
+.brand-logo {
+  height: 60px;
+  width: auto;
+  margin-bottom: 20px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .site-title {
   font-size: 22px;
   font-weight: 500;
   margin-bottom: 10px;
+  color: #FF003B; /* L'Oréal red */
 }
 
 /* chat window */
@@ -37,27 +48,72 @@ body {
 
 .chat-window {
   height: 360px;
-  border: 1px solid #000;
+  border: 2px solid #E3A535; /* L'Oréal gold border */
   padding: 20px;
   font-size: 18px;
   line-height: 1.5;
   overflow-y: auto;
-  background: #fafafa;
+  background: #FFFFFF;
   white-space: pre-line;
 }
 
 /* messages */
+.message {
+  margin-bottom: 14px;
+  line-height: 1.5;
+  padding: 10px 15px;
+  border-radius: 8px;
+  max-width: 80%;
+  word-wrap: break-word;
+}
+
+.user-message {
+  background: #FF003B; /* L'Oréal red */
+  color: #FFFFFF;
+  margin-left: auto;
+  margin-right: 0;
+  text-align: right;
+}
+
+.bot-message {
+  background: #FFFFFF;
+  color: #000000;
+  margin-left: 0;
+  margin-right: auto;
+  border-left: 4px solid #E3A535; /* L'Oréal gold accent */
+  border: 1px solid #E3A535; /* L'Oréal gold border */
+}
+
+.typing {
+  font-style: italic;
+  opacity: 0.7;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.7;
+  }
+}
+
+/* Legacy message styles for compatibility */
 .msg {
   margin-bottom: 14px;
   line-height: 1.5;
 }
 
 .msg.user {
-  color: #000;
+  color: #FF003B; /* L'Oréal red */
 }
 
 .msg.ai {
-  color: #666666;
+  color: #000000;
 }
 
 /* input row */
@@ -70,19 +126,22 @@ body {
 .chat-form input {
   flex: 1;
   padding: 12px;
-  border: 1px solid #ccc;
+  border: 2px solid #E3A535; /* L'Oréal gold border */
   font-size: 18px;
+  background: #FFFFFF;
+  color: #000000;
 }
 
 .chat-form input:focus {
-  outline: 2px solid #000;
+  outline: 2px solid #FF003B; /* L'Oréal red focus */
   outline-offset: 2px;
+  border-color: #FF003B;
 }
 
 .chat-form button {
   font-size: 18px;
-  background: #000;
-  color: #fff;
+  background: #FF003B; /* L'Oréal red */
+  color: #FFFFFF;
   border: none;
   padding: 12px;
   width: 48px;
@@ -99,11 +158,11 @@ body {
 }
 
 .chat-form button:hover {
-  background: #666666;
+  background: #E3A535; /* L'Oréal gold on hover */
 }
 
 .chat-form button:focus {
-  outline: 2px solid #000;
+  outline: 2px solid #E3A535; /* L'Oréal gold focus */
   outline-offset: 2px;
 }
 
@@ -125,7 +184,10 @@ body {
   margin: 60px 0 40px;
   text-align: center;
   font-size: 14px;
-  color: #666;
+  color: #000000;
+  background: #FFFFFF;
+  padding: 20px 0;
+  border-top: 2px solid #E3A535; /* L'Oréal gold accent */
 }
 
 .site-footer nav {
@@ -134,10 +196,10 @@ body {
 
 .site-footer a {
   margin: 0 8px;
-  color: #000;
+  color: #FF003B; /* L'Oréal red */
   text-decoration: none;
 }
 
 .site-footer a:hover {
-  color: #666666;
+  color: #E3A535; /* L'Oréal gold on hover */
 }
