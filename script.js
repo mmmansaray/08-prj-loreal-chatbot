@@ -26,46 +26,8 @@ TOPICS I CANNOT HELP WITH:
 let conversationContext = {
   lastTopic: null,
   userPreferences: {},
-  questionCount: 0
-};
-
-// Multiple response variations for dynamic conversations
-const responseBank = {
-  foundation: [
-    "L'Oréal's True Match Foundation is perfect for you! With 45 shades, it adapts to your skin tone beautifully. What's your skin type - oily, dry, or combination?",
-    "I love recommending our Infallible Pro-Matte Foundation for long-lasting coverage! Are you looking for light, medium, or full coverage?",
-    "Have you tried L'Oréal's Magic Nude Liquid Powder? It's amazing for a natural, breathable finish. What occasions are you planning to wear it for?"
-  ],
-  
-  skincare: [
-    "L'Oréal skincare is fantastic! Our Revitalift line is perfect for anti-aging, while Hydra Genius provides incredible hydration. What are your main skin concerns?",
-    "I'm excited to help with your skincare routine! Are you interested in anti-aging products, hydration, or brightening? L'Oréal has amazing options for each!",
-    "Let's create the perfect L'Oréal skincare routine for you! Tell me about your current concerns - fine lines, dryness, dullness, or uneven tone?"
-  ],
-  
-  hair: [
-    "L'Oréal Elvive has the perfect solution for your hair! Our Total Repair 5 works wonders for damaged hair, while Color Vibrancy protects color-treated hair. What's your hair type?",
-    "I love helping with hair transformations! Are you looking for repair, volume, color protection, or hydration? L'Oréal Excellence and Elvive have amazing options!",
-    "Hair care is so important! L'Oréal's Advanced Haircare line offers everything from sulfate-free cleansing to intense conditioning. What's your biggest hair challenge?"
-  ],
-  
-  mascara: [
-    "L'Oréal mascaras are incredible! Voluminous Lash Paradise gives amazing volume and length, while Telescopic creates precise definition. Do you prefer dramatic or natural looks?",
-    "Our mascaras are bestsellers for a reason! Are you looking for waterproof, lengthening, or volumizing? L'Oréal has the perfect formula for every need!",
-    "Mascara can transform your entire look! L'Oréal's Carbon Black formula is perfect for intense color. Do you prefer curved or straight wands?"
-  ],
-  
-  lipstick: [
-    "L'Oréal lipsticks are amazing! Rouge Signature offers liquid matte perfection, while Color Riche provides creamy luxury. What's your favorite lipstick finish?",
-    "I'm excited to help you find your perfect shade! Are you drawn to bold reds, subtle nudes, or vibrant pinks? L'Oréal has over 100 stunning shades!",
-    "Lip color is so personal! Do you prefer long-wearing liquid lipsticks or moisturizing bullets? L'Oréal's formulas are designed for every preference!"
-  ],
-
-  redirect: [
-    "I'm here specifically to help with L'Oréal beauty products and advice! Let's talk about how I can enhance your beauty routine today. Are you interested in makeup, skincare, or haircare? 💄✨",
-    "I'd love to focus on L'Oréal beauty topics! Whether you need makeup tips, skincare advice, or haircare solutions, I'm here to help. What beauty goals are you working on? 🌟",
-    "Let's keep our conversation focused on L'Oréal beauty! I'm passionate about helping you discover the perfect products for your routine. What would you like to explore first? ✨"
-  ]
+  questionCount: 0,
+  lastMessage: null
 };
 
 /* DOM elements */
@@ -74,7 +36,8 @@ const userInput = document.getElementById("userInput");
 const chatWindow = document.getElementById("chatWindow");
 
 // Set initial message with L'Oréal branding
-chatWindow.innerHTML = '<div class="message bot-message">👋 Hello! I\'m your L\'Oréal beauty advisor. How can I help you with your beauty routine today?</div>';
+chatWindow.innerHTML =
+  "<div class=\"message bot-message\">👋 Hello! I'm your L'Oréal beauty advisor. How can I help you with your beauty routine today?</div>";
 
 /* Handle form submit */
 chatForm.addEventListener("submit", (e) => {
@@ -95,17 +58,20 @@ chatForm.addEventListener("submit", (e) => {
   // Simulate L'Oréal beauty advisor response
   setTimeout(() => {
     hideTypingIndicator();
-    
-    // Enhanced L'Oréal responses with comprehensive knowledge
+
+    // Intelligent L'Oréal responses
     let response = generateLorealResponse(userMessage);
     displayMessage(response, "bot");
   }, 1500);
 });
 
-// Advanced L'Oréal Beauty Expert - Comprehensive Product Knowledge
+// Intelligent L'Oréal Beauty Advisor - Natural Conversation Engine
 function generateLorealResponse(userMessage) {
   const message = userMessage.toLowerCase();
   conversationContext.questionCount++;
+  
+  // Store the original message for context
+  conversationContext.lastMessage = userMessage;
   
   // Off-topic check first
   if (isOffTopic(message)) {
@@ -117,107 +83,149 @@ function generateLorealResponse(userMessage) {
     return redirectResponses[Math.floor(Math.random() * redirectResponses.length)];
   }
   
-  // SENSITIVE SKIN - Specific detection and comprehensive response
-  if (message.includes("sensitive") && (message.includes("skin") || message.includes("face"))) {
-    const sensitiveResponses = [
-      "Sensitive skin needs extra gentle care! L'Oréal has amazing options for you: our Hydra Genius line is formulated for sensitive skin with gentle hydration. The Revitalift Gentle line offers anti-aging benefits without irritation. Have you identified specific triggers for your sensitivity?",
-      "I understand sensitive skin concerns! L'Oréal's gentle formulations include our Micellar Water for makeup removal (no harsh rubbing needed), and our Pure-Clay masks are designed to be gentle yet effective. What reactions have you experienced with other products?",
-      "Sensitive skin deserves the best care! L'Oréal's dermatologist-tested products include fragrance-free options and hypoallergenic formulas. Our Age Perfect line has gentle anti-aging products perfect for sensitive skin. What's your biggest concern - redness, dryness, or irritation?"
-    ];
-    return sensitiveResponses[Math.floor(Math.random() * sensitiveResponses.length)];
+  // INTELLIGENT BEAUTY CONVERSATION ENGINE
+  // This section handles natural beauty conversations without rigid keyword matching
+  
+  // Greeting responses
+  if (message.includes("hello") || message.includes("hi") || message.includes("hey") || conversationContext.questionCount === 1) {
+    return generateWelcomeResponse();
   }
   
-  // ACNE/BREAKOUTS - Comprehensive acne solutions
-  if (message.includes("acne") || message.includes("breakout") || message.includes("blemish") || message.includes("pimple")) {
-    const acneResponses = [
-      "Acne-prone skin needs the right balance! L'Oréal's Pure-Clay line is fantastic - our Detox mask with charcoal draws out impurities, while our Exfoliate mask gently removes dead skin. For daily care, try our Revitalift Bright Reveal cleanser with glycolic acid. What type of breakouts are you dealing with?",
-      "I can definitely help with acne concerns! L'Oréal offers targeted solutions: our Age Perfect Rosy Tone moisturizer won't clog pores, and our True Match foundation has non-comedogenic options. For treatment, consider our Pure-Clay Blemish Rescue mask. Do you prefer gentle or stronger acne treatments?",
-      "Breakouts can be frustrating! L'Oréal's approach combines gentle cleansing with effective treatment. Our Micellar Water removes makeup without over-drying, while our Clay masks target specific concerns. The key is consistency! What's your current routine, and where do you break out most?"
-    ];
-    return acneResponses[Math.floor(Math.random() * acneResponses.length)];
+  // Handle follow-up questions and context
+  if (conversationContext.lastTopic && (message.includes("yes") || message.includes("tell me more") || message.includes("what about"))) {
+    return generateFollowUpResponse(conversationContext.lastTopic);
   }
   
-  // DRY SKIN - Hydration focused responses
-  if (message.includes("dry") && (message.includes("skin") || message.includes("face"))) {
-    const dryResponses = [
-      "Dry skin needs intense hydration! L'Oréal's Hydra Genius line is perfect - our Water-Gel moisturizer provides 72-hour hydration with hyaluronic acid. For nighttime, try Revitalift Triple Power moisturizer with Pro-Retinol. The Age Perfect Hydra-Nutrition line is also amazing for mature dry skin. How severe is your dryness?",
-      "I love helping with dry skin! L'Oréal's hydrating heroes include our Micellar Water (won't strip natural oils), Hydra Genius serum for deep moisture, and our nourishing cleansers. For makeup, True Match Lumi foundation adds a dewy finish. Do you experience tightness, flaking, or both?",
-      "Dry skin deserves extra love! L'Oréal's moisture-rich formulas include ceramides and hyaluronic acid. Our Revitalift line offers hydrating anti-aging benefits, while Pure-Clay masks have hydrating variants. The secret is layering hydration! What's your climate like, and when is your skin driest?"
-    ];
-    return dryResponses[Math.floor(Math.random() * dryResponses.length)];
-  }
-  
-  // OILY SKIN - Oil control solutions
-  if (message.includes("oily") && (message.includes("skin") || message.includes("face"))) {
-    const oilyResponses = [
-      "Oily skin needs balance, not stripping! L'Oréal's Pure-Clay Detox mask with charcoal is perfect for weekly deep cleaning. For daily care, try our Revitalift Bright Reveal cleanser and oil-free moisturizers. Our Infallible Pro-Matte foundation controls shine all day. Where do you get oiliest?",
-      "I understand oily skin challenges! L'Oréal offers excellent oil control: Pure-Clay Purify mask reduces shine, while our lightweight moisturizers hydrate without greasiness. True Match foundation has oil-free formulas, and our setting powders keep you matte. Do you have combination skin or oily everywhere?",
-      "Oily skin can be managed beautifully! L'Oréal's approach includes gentle cleansing (harsh products make oil worse!), clay-based treatments, and shine-controlling makeup. Our Age Perfect line even has oil-control anti-aging products. What time of day is oil most problematic for you?"
-    ];
-    return oilyResponses[Math.floor(Math.random() * oilyResponses.length)];
-  }
-  
-  // ANTI-AGING - Comprehensive age-defying solutions
-  if (message.includes("aging") || message.includes("wrinkle") || message.includes("fine line") || message.includes("mature")) {
-    const antiAgingResponses = [
-      "Anti-aging is L'Oréal's specialty! Our Revitalift line features Pro-Retinol and Vitamin C for powerful results. Try Triple Power moisturizer for day and Bright Reveal for evening. Age Perfect line targets mature skin with nourishing formulas. What's your main concern - fine lines, firmness, or dark spots?",
-      "I love our anti-aging innovations! L'Oréal's Revitalift Derm Intensives line has 10% Pure Glycolic Acid and 1.5% Pure Hyaluronic Acid - professional-strength at home! Our Age Perfect Rosy Tone adds subtle color while fighting aging. Are you new to anti-aging or looking to upgrade your routine?",
-      "Age-defying skincare is so exciting! L'Oréal offers everything from gentle Age Perfect formulas to powerful Revitalift treatments. Our True Match foundation even has anti-aging benefits! The key is consistency and sun protection. What's your age range, and what results are you hoping to see?"
-    ];
-    return antiAgingResponses[Math.floor(Math.random() * antiAgingResponses.length)];
-  }
-  
-  // FOUNDATION - Detailed foundation matching
-  if (message.includes("foundation") || message.includes("base") || message.includes("coverage")) {
-    const foundationResponses = [
-      "Foundation matching is my expertise! L'Oréal's True Match has 45 shades with undertone matching - cool (C), warm (W), and neutral (N). For oily skin, try Infallible Pro-Matte. For dry skin, True Match Lumi adds radiance. For mature skin, Age Perfect foundation offers buildable coverage. What's your skin type and coverage preference?",
-      "Let's find your perfect foundation! L'Oréal offers every formula: True Match for everyday wear, Infallible for long-lasting coverage, Magic Nude for lightweight feel, and Age Perfect for mature skin. Our shade range is incredibly inclusive. Do you know your undertone, and what finish do you prefer?",
-      "Foundation can transform your look! L'Oréal's True Match technology ensures perfect color matching, while our various formulas suit every need. Pro tip: mix shades for custom color, or blend with moisturizer for lighter coverage. What's your biggest foundation challenge - finding the right shade, longevity, or finish?"
-    ];
-    return foundationResponses[Math.floor(Math.random() * foundationResponses.length)];
-  }
-  
-  // HAIR CARE - Specific hair concerns
-  if (message.includes("hair") || message.includes("shampoo") || message.includes("conditioner")) {
-    const hairResponses = [
-      "Hair care is so personal! L'Oréal Elvive has solutions for every concern: Total Repair 5 for damaged hair, Color Vibrancy for color-treated hair, Volume for fine hair, and Smooth for frizzy hair. Our sulfate-free formulas are gentle yet effective. What's your hair type and biggest challenge?",
-      "I love helping with hair transformations! L'Oréal's Advanced Haircare includes everything from clarifying to deep conditioning. Our Power Moisture line hydrates dry hair, while Power Volume adds body. For color protection, nothing beats our Color Vibrancy line. How often do you wash, and what results do you want?",
-      "Healthy hair starts with the right products! L'Oréal Elvive offers targeted solutions based on hair concerns, not just type. We have treatments for heat damage, chemical damage, and environmental stress. Our leave-in treatments provide extra protection. What's your hair history - color, heat styling, chemical treatments?"
-    ];
-    return hairResponses[Math.floor(Math.random() * hairResponses.length)];
-  }
-  
-  // MASCARA & EYE MAKEUP
-  if (message.includes("mascara") || message.includes("eyes") || message.includes("lashes")) {
-    const eyeResponses = [
-      "L'Oréal mascaras are legendary! Voluminous Lash Paradise gives incredible volume and length, while Telescopic creates precise, separated lashes. For sensitive eyes, try our gentle formulas. Do you prefer dramatic volume or natural definition?",
-      "Eye makeup is transformative! Our mascaras include waterproof options, tubing formulas, and lengthening technologies. L'Oréal's eyeshadow palettes complement any mascara perfectly. What's your eye shape, and what look are you trying to achieve?",
-      "The eyes have it! L'Oréal's eye makeup range includes everything from bold mascaras to subtle liners. Our Carbon Black formula provides intense color, while our brown shades offer natural definition. Do you have any eye sensitivities or specific preferences?"
-    ];
-    return eyeResponses[Math.floor(Math.random() * eyeResponses.length)];
-  }
-  
-  // LIPSTICK & LIP PRODUCTS
-  if (message.includes("lipstick") || message.includes("lips") || message.includes("rouge")) {
-    const lipResponses = [
-      "L'Oréal lip products are amazing! Rouge Signature offers all-day liquid matte comfort, while Color Riche provides creamy, nourishing coverage. Our lip oils add shine and care. What's your preferred finish - matte, satin, or glossy?",
-      "Lip color is so expressive! L'Oréal offers over 100 shades from bold statement reds to perfect everyday nudes. Our formulas include long-wearing, moisturizing, and plumping options. Do you prefer subtle enhancement or bold statement lips?",
-      "Perfect lips start with the right products! L'Oréal's lip range includes prep (scrubs and balms), color (lipsticks and glosses), and care (treatments and oils). What's your lip care routine like, and what shades do you gravitate toward?"
-    ];
-    return lipResponses[Math.floor(Math.random() * lipResponses.length)];
-  }
-  
-  // DEFAULT BEAUTY RESPONSE - Open-ended and helpful
-  return generateOpenEndedBeautyResponse(message);
+  // Natural beauty conversation based on content analysis
+  return generateNaturalBeautyResponse(userMessage);
 }
 
-// Open-ended beauty response for any beauty question
-function generateOpenEndedBeautyResponse(message) {
+// Generate welcome responses
+function generateWelcomeResponse() {
+  const welcomeResponses = [
+    "Hello! I'm your L'Oréal beauty expert! I'm here to help with absolutely anything beauty-related - from skincare concerns to makeup techniques, hair care, product recommendations, or beauty routines. What would you like to explore today?",
+    "Hi there! Welcome to your personal L'Oréal beauty consultation! Whether you have specific concerns, want to try something new, or need help with your current routine, I'm here to help. What's on your mind?",
+    "Hey! I'm so excited to help you with all things L'Oréal beauty! I can assist with product recommendations, beauty tips, routine advice, color matching, or answer any beauty questions you have. How can I help you look and feel amazing today?"
+  ];
+  return welcomeResponses[Math.floor(Math.random() * welcomeResponses.length)];
+}
+
+// Generate follow-up responses based on previous topic
+function generateFollowUpResponse(lastTopic) {
+  const followUpResponses = {
+    skincare: [
+      "Great! Let's dive deeper into skincare. L'Oréal has incredible innovations like our Revitalift line with Pro-Retinol, Hydra Genius with hyaluronic acid, and Pure-Clay masks for different concerns. What specific skin issues are you dealing with, or what results are you hoping to achieve?",
+      "I love talking skincare! L'Oréal's research labs have created some amazing formulas. Are you interested in daily care routines, specific treatments, anti-aging, hydration, or something else? I can recommend the perfect products for your unique needs!"
+    ],
+    makeup: [
+      "Makeup is so fun! L'Oréal has everything from everyday essentials to glamorous looks. Are you interested in complexion products, eye makeup, lip colors, or maybe learning new techniques? I'd love to help you create your perfect look!",
+      "There's so much to explore in makeup! Whether you're a beginner looking for basics or an expert wanting to try new trends, L'Oréal has incredible options. What type of looks do you usually go for, or what would you like to experiment with?"
+    ],
+    hair: [
+      "Hair care is such a personal journey! L'Oréal Elvive has solutions for every hair type and concern. Are you dealing with damage, dryness, color-treated hair, lack of volume, or something else? I can help you build the perfect hair care routine!",
+      "I love helping with hair transformations! L'Oréal's hair care technology is amazing. Tell me about your hair - its texture, any treatments you've had, your styling routine, or challenges you're facing. We'll find the perfect products!"
+    ]
+  };
+  
+  const responses = followUpResponses[lastTopic] || [
+    "I'd love to help you more! What specific aspects would you like to know about? I'm here to give you detailed, personalized advice based on exactly what you need.",
+    "Tell me more about what you're looking for! The more details you share, the better I can recommend the perfect L'Oréal products and techniques for you."
+  ];
+  
+  return responses[Math.floor(Math.random() * responses.length)];
+}
+
+// Natural beauty response generator - handles ANY beauty question intelligently
+function generateNaturalBeautyResponse(userMessage) {
+  const message = userMessage.toLowerCase();
+  
+  // Analyze the message for beauty context and respond naturally
+  let response = "";
+  let detectedTopic = "general";
+  
+  // SKIN-RELATED RESPONSES (comprehensive and natural)
+  if (message.includes("skin") || message.includes("face") || message.includes("complexion")) {
+    if (message.includes("sensitive")) {
+      response = "Sensitive skin can be tricky, but L'Oréal has you covered! Our gentle formulations include Hydra Genius (amazing for sensitive skin hydration), dermatologist-tested Micellar Water for gentle cleansing, and fragrance-free options. The key is using products specifically designed for sensitivity. What reactions do you typically experience, and what's your current skincare routine like?";
+      detectedTopic = "sensitive_skin";
+    } else if (message.includes("dry") || message.includes("dehydrated") || message.includes("flaky") || message.includes("tight")) {
+      response = "Dry skin needs lots of love and hydration! L'Oréal's Hydra Genius line is incredible - the Water-Gel provides 72-hour moisture with hyaluronic acid. For deeper hydration, try our Revitalift moisturizers with ceramides. Age Perfect is perfect for mature dry skin too. Do you experience dryness all over your face or in specific areas? And what's your current moisturizing routine?";
+      detectedTopic = "dry_skin";
+    } else if (message.includes("oily") || message.includes("shiny") || message.includes("greasy") || message.includes("pores")) {
+      response = "Oily skin is totally manageable with the right approach! L'Oréal's Pure-Clay masks are game-changers - the Detox mask with charcoal is perfect for deep cleaning. For daily care, gentle cleansing is key (harsh products make oiliness worse!). Our oil-free moisturizers and mattifying foundations help control shine. Where do you get oiliest, and what products have you tried before?";
+      detectedTopic = "oily_skin";
+    } else if (message.includes("acne") || message.includes("breakout") || message.includes("pimple") || message.includes("blemish")) {
+      response = "Breakouts are so frustrating, but L'Oréal has effective solutions! Our Pure-Clay line targets different concerns - Detox for deep cleaning, Exfoliate for gentle renewal. The Revitalift Bright Reveal cleanser has glycolic acid for daily treatment. Non-comedogenic makeup like True Match won't clog pores. What type of breakouts do you get, and have you noticed any triggers?";
+      detectedTopic = "acne";
+    } else if (message.includes("aging") || message.includes("wrinkle") || message.includes("fine line") || message.includes("firm")) {
+      response = "Anti-aging is one of L'Oréal's specialties! Our Revitalift line has powerful ingredients like Pro-Retinol and Vitamin C. The Derm Intensives collection offers professional-strength treatments at home. Age Perfect is specifically formulated for mature skin needs. What are your main concerns - fine lines, firmness, dark spots, or overall texture? And what's your current anti-aging routine?";
+      detectedTopic = "antiaging";
+    } else {
+      response = "Skincare is so important and personal! L'Oréal has solutions for every skin type and concern. From gentle cleansers to powerful treatments, hydrating serums to protective moisturizers - we've got you covered. Tell me more about your skin - what's your type, any specific concerns, or what results are you hoping to achieve? I'd love to help you build the perfect routine!";
+      detectedTopic = "skincare";
+    }
+  }
+  
+  // MAKEUP-RELATED RESPONSES (comprehensive and natural)
+  else if (message.includes("makeup") || message.includes("foundation") || message.includes("concealer") || message.includes("powder") || message.includes("base")) {
+    if (message.includes("foundation") || message.includes("base") || message.includes("coverage")) {
+      response = "Foundation is the base of everything! L'Oréal's True Match has 45 shades with perfect undertone matching - it's like having a custom color made for you. For different needs: Infallible Pro-Matte for long wear, True Match Lumi for a radiant glow, Magic Nude for lightweight feel, Age Perfect for mature skin. What's your skin type, desired coverage level, and biggest foundation challenges?";
+      detectedTopic = "foundation";
+    } else {
+      response = "Makeup is such an art form! L'Oréal has everything from everyday essentials to bold statement pieces. Whether you're looking for the perfect everyday look, want to learn new techniques, or experiment with trends - I'm here to help! What type of makeup are you most interested in, or what look are you trying to achieve?";
+      detectedTopic = "makeup";
+    }
+  }
+  
+  // EYE MAKEUP RESPONSES
+  else if (message.includes("eyes") || message.includes("mascara") || message.includes("eyeshadow") || message.includes("liner") || message.includes("lashes")) {
+    response = "Eye makeup can completely transform your look! L'Oréal's mascaras are legendary - Voluminous Lash Paradise for drama, Telescopic for precision, waterproof options for all-day wear. Our eyeshadow palettes and liners complement perfectly. What's your eye shape, preferred style (natural vs dramatic), and any specific eye makeup challenges you face?";
+    detectedTopic = "eyes";
+  }
+  
+  // LIP RESPONSES
+  else if (message.includes("lips") || message.includes("lipstick") || message.includes("gloss") || message.includes("rouge")) {
+    response = "Lip products are so personal and expressive! L'Oréal's lip range is incredible - Rouge Signature for all-day matte comfort, Color Riche for luxurious cream, lip oils for care and shine. With over 100 shades from bold statements to perfect nudes. What finish do you prefer, what shades do you gravitate toward, and what's most important to you - longevity, comfort, or color payoff?";
+    detectedTopic = "lips";
+  }
+  
+  // HAIR RESPONSES
+  else if (message.includes("hair") || message.includes("shampoo") || message.includes("conditioner") || message.includes("elvive")) {
+    response = "Hair care is so individual! L'Oréal Elvive has targeted solutions for every concern - Total Repair 5 for damage, Color Vibrancy for color-treated hair, Volume for fine hair, Smooth for frizz control. Our formulas address specific needs, not just hair types. What's your hair like - texture, length, any chemical treatments, styling habits, and what challenges are you facing?";
+    detectedTopic = "hair";
+  }
+  
+  // COLOR/SHADE QUESTIONS
+  else if (message.includes("color") || message.includes("shade") || message.includes("match") || message.includes("tone")) {
+    response = "Color matching is such an important part of beauty! L'Oréal's True Match technology takes the guesswork out of finding your perfect shade. Whether it's foundation, lipstick, or hair color, we have incredible ranges. What are you looking to match, and do you know your undertones? I can help you find your perfect shades across our entire collection!";
+    detectedTopic = "color";
+  }
+  
+  // ROUTINE QUESTIONS
+  else if (message.includes("routine") || message.includes("steps") || message.includes("order") || message.includes("morning") || message.includes("evening")) {
+    response = "Beauty routines are so personal and should work for YOUR lifestyle! Whether you want a quick 5-minute routine or love a luxurious multi-step process, L'Oréal has products that fit. Are you looking to build a skincare routine, makeup routine, hair care regimen, or all of the above? Tell me about your current routine and what you'd like to improve or change!";
+    detectedTopic = "routine";
+  }
+  
+  // CATCH-ALL FOR ANY BEAUTY QUESTION
+  else {
+    response = generateOpenBeautyResponse(userMessage);
+    detectedTopic = "general";
+  }
+  
+  // Update conversation context
+  conversationContext.lastTopic = detectedTopic;
+  
+  return response;
+}
+
+// Open response for any beauty question not specifically categorized
+function generateOpenBeautyResponse(userMessage) {
   const openResponses = [
-    "That's a great beauty question! L'Oréal has over 100 years of beauty innovation, so we likely have the perfect solution for you. Could you tell me more details about what you're looking for? I want to give you the most personalized recommendation possible!",
-    "I'd love to help you with that! L'Oréal's extensive range covers every beauty need imaginable. To give you the best advice, could you share more about your specific concerns, skin type, or what results you're hoping to achieve?",
-    "Beauty is so individual, and that's what I love about it! L'Oréal has products for every person, preference, and concern. Help me understand exactly what you need so I can recommend the perfect products from our amazing collection!",
-    "That's exactly the kind of question I'm here for! L'Oréal's research and development creates solutions for every beauty challenge. Tell me more about your situation - your skin type, current routine, budget, or any specific concerns - so I can give you targeted recommendations!"
+    `That's a great question! L'Oréal has over 100 years of beauty innovation, so I'm confident we have solutions for you. Could you tell me a bit more about what you're looking for? The more details you share, the better I can help you find the perfect products and advice!`,
+    `I love that question! Beauty is so individual, and L'Oréal's extensive range covers virtually every beauty need. To give you the most helpful recommendations, could you share more about your specific situation, concerns, or what you're hoping to achieve?`,
+    `That's exactly the kind of question I'm here for! L'Oréal creates products for every beauty challenge and preference. Help me understand more about your needs - your skin/hair type, current routine, lifestyle, or what results you're looking for - so I can give you personalized advice!`,
+    `Great question! L'Oréal's research and development teams work constantly to solve beauty challenges like yours. I'd love to help you find the perfect solution! Could you give me more context about your situation so I can recommend the best products and techniques for you?`
   ];
   return openResponses[Math.floor(Math.random() * openResponses.length)];
 }
@@ -227,13 +235,13 @@ function isOffTopic(message) {
   const offTopicKeywords = [
     "weather", "sports", "politics", "food", "music", "movies", "work", "school",
     "travel", "technology", "games", "news", "health", "medicine", "doctor",
-    "recipe", "cooking", "restaurant", "car", "house", "money", "investment"
+    "recipe", "cooking", "restaurant", "car", "house", "money", "investment",
+    "shopping" // except beauty shopping
   ];
   
   const beautyKeywords = [
     "beauty", "makeup", "skin", "hair", "cosmetic", "loreal", "foundation",
-    "lipstick", "mascara", "skincare", "routine", "product", "shade", "color",
-    "face", "eyes", "lips", "cream", "serum", "moisturizer", "cleanser"
+    "lipstick", "mascara", "skincare", "routine", "product", "shade", "color"
   ];
   
   // Check if message contains off-topic keywords but no beauty keywords
