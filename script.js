@@ -22,12 +22,40 @@ TOPICS I CANNOT HELP WITH:
 ❌ Medical advice or skin condition diagnosis
 ❌ Anything unrelated to L'Oréal beauty`;
 
-// Conversation context tracking
+// Advanced AI Conversation Context & Memory System
 let conversationContext = {
   lastTopic: null,
   userPreferences: {},
   questionCount: 0,
-  lastMessage: null
+  lastMessage: null,
+  skinType: null,
+  skinConcerns: [],
+  askedQuestions: [],
+  detectedInfo: {},
+  conversationHistory: [],
+  userProfile: {
+    age: null,
+    lifestyle: null,
+    experience: null,
+    budget: null,
+    currentProducts: [],
+    favoriteColors: [],
+    skinGoals: [],
+    makeupStyle: null
+  },
+  contextMemory: {
+    mentionedProducts: [],
+    expressedPreferences: [],
+    rejectedSuggestions: [],
+    followUpNeeded: [],
+    currentNeed: null
+  },
+  intelligenceLevel: {
+    understandsComplexQueries: true,
+    remembersConversation: true,
+    makesConnections: true,
+    anticipatesNeeds: true
+  }
 };
 
 /* DOM elements */
@@ -59,45 +87,546 @@ chatForm.addEventListener("submit", (e) => {
   setTimeout(() => {
     hideTypingIndicator();
 
-    // Intelligent L'Oréal responses
+    // Ultra-intelligent L'Oréal responses
     let response = generateLorealResponse(userMessage);
     displayMessage(response, "bot");
   }, 1500);
 });
 
-// Intelligent L'Oréal Beauty Advisor - Natural Conversation Engine
+// ULTRA-INTELLIGENT L'Oréal Beauty AI - Advanced Conversation Engine
 function generateLorealResponse(userMessage) {
   const message = userMessage.toLowerCase();
   conversationContext.questionCount++;
   
-  // Store the original message for context
-  conversationContext.lastMessage = userMessage;
+  // Store conversation in memory
+  conversationContext.conversationHistory.push({
+    user: userMessage,
+    timestamp: Date.now(),
+    processed: false
+  });
   
-  // Off-topic check first
+  // Advanced information extraction and context building
+  performAdvancedAnalysis(userMessage);
+  
+  // Off-topic check with intelligence
   if (isOffTopic(message)) {
-    const redirectResponses = [
-      "I'm here specifically to help with L'Oréal beauty products and advice! Let's talk about how I can enhance your beauty routine today. Are you interested in makeup, skincare, or haircare? 💄✨",
-      "I'd love to focus on L'Oréal beauty topics! Whether you need makeup tips, skincare advice, or haircare solutions, I'm here to help. What beauty goals are you working on? 🌟",
-      "Let's keep our conversation focused on L'Oréal beauty! I'm passionate about helping you discover the perfect products for your routine. What would you like to explore first? ✨"
-    ];
-    return redirectResponses[Math.floor(Math.random() * redirectResponses.length)];
+    return generateIntelligentRedirect();
   }
   
-  // INTELLIGENT BEAUTY CONVERSATION ENGINE
-  // This section handles natural beauty conversations without rigid keyword matching
-  
-  // Greeting responses
-  if (message.includes("hello") || message.includes("hi") || message.includes("hey") || conversationContext.questionCount === 1) {
+  // ULTRA-INTELLIGENT RESPONSE SYSTEM
+  if (conversationContext.questionCount === 1) {
     return generateWelcomeResponse();
   }
   
-  // Handle follow-up questions and context
-  if (conversationContext.lastTopic && (message.includes("yes") || message.includes("tell me more") || message.includes("what about"))) {
-    return generateFollowUpResponse(conversationContext.lastTopic);
+  // Advanced context-aware response generation
+  return generateUltraIntelligentResponse(userMessage);
+}
+
+// Advanced Analysis Engine - Extracts maximum information
+function performAdvancedAnalysis(userMessage) {
+  const message = userMessage.toLowerCase();
+  
+  // Advanced skin type detection
+  extractSkinInformation(message);
+  
+  // Lifestyle and preference detection
+  extractLifestyleInfo(message);
+  
+  // Product experience detection
+  extractExperienceLevel(message);
+  
+  // Emotional state and urgency detection
+  extractEmotionalContext(message);
+  
+  // Goal and outcome detection
+  extractBeautyGoals(message);
+  
+  // Budget and shopping behavior
+  extractShoppingBehavior(message);
+}
+
+// Extract comprehensive skin information
+function extractSkinInformation(message) {
+  // Skin types
+  if (message.includes("oily") || message.includes("greasy") || message.includes("shine")) {
+    conversationContext.skinType = "oily";
+    if (message.includes("very oily") || message.includes("extremely oily")) {
+      conversationContext.userProfile.skinIntensity = "high";
+    }
+  }
+  if (message.includes("dry") || message.includes("flaky") || message.includes("tight")) {
+    conversationContext.skinType = "dry";
+    if (message.includes("very dry") || message.includes("extremely dry")) {
+      conversationContext.userProfile.skinIntensity = "high";
+    }
+  }
+  if (message.includes("sensitive") || message.includes("irritation") || message.includes("react")) {
+    conversationContext.skinType = "sensitive";
+  }
+  if (message.includes("combination") || message.includes("t-zone")) {
+    conversationContext.skinType = "combination";
   }
   
-  // Natural beauty conversation based on content analysis
-  return generateNaturalBeautyResponse(userMessage);
+  // Advanced skin concerns detection
+  const concerns = {
+    "acne": ["acne", "breakout", "pimple", "blemish", "spots"],
+    "aging": ["wrinkle", "fine line", "aging", "mature", "firmness", "sagging"],
+    "hyperpigmentation": ["dark spot", "pigmentation", "uneven tone", "discoloration", "melasma"],
+    "redness": ["redness", "irritation", "inflamed", "blotchy"],
+    "pores": ["large pores", "blackhead", "whitehead", "clogged"],
+    "texture": ["rough", "bumpy", "uneven texture", "smooth"],
+    "dullness": ["dull", "tired", "glow", "radiance", "brightness"]
+  };
+  
+  Object.keys(concerns).forEach(concern => {
+    if (concerns[concern].some(keyword => message.includes(keyword))) {
+      if (!conversationContext.skinConcerns.includes(concern)) {
+        conversationContext.skinConcerns.push(concern);
+      }
+    }
+  });
+}
+
+// Extract lifestyle information
+function extractLifestyleInfo(message) {
+  // Age detection
+  if (message.includes("teenager") || message.includes("teen")) {
+    conversationContext.userProfile.age = "teen";
+  } else if (message.includes("20s") || message.includes("twenties")) {
+    conversationContext.userProfile.age = "20s";
+  } else if (message.includes("30s") || message.includes("thirties")) {
+    conversationContext.userProfile.age = "30s";
+  } else if (message.includes("40s") || message.includes("forties") || message.includes("mature")) {
+    conversationContext.userProfile.age = "40s+";
+  }
+  
+  // Lifestyle detection
+  if (message.includes("busy") || message.includes("quick") || message.includes("minutes")) {
+    conversationContext.userProfile.lifestyle = "busy";
+  }
+  if (message.includes("natural") || message.includes("minimal")) {
+    conversationContext.userProfile.makeupStyle = "natural";
+  }
+  if (message.includes("glam") || message.includes("dramatic") || message.includes("bold")) {
+    conversationContext.userProfile.makeupStyle = "dramatic";
+  }
+}
+
+// Extract beauty experience level
+function extractExperienceLevel(message) {
+  if (message.includes("beginner") || message.includes("new to") || message.includes("don't know")) {
+    conversationContext.userProfile.experience = "beginner";
+  } else if (message.includes("expert") || message.includes("experienced") || message.includes("makeup artist")) {
+    conversationContext.userProfile.experience = "advanced";
+  } else if (message.includes("some experience") || message.includes("okay at")) {
+    conversationContext.userProfile.experience = "intermediate";
+  }
+}
+
+// Extract emotional context and urgency
+function extractEmotionalContext(message) {
+  const urgencyWords = ["urgent", "need now", "asap", "quickly", "emergency", "help"];
+  const frustrationWords = ["frustrated", "annoyed", "nothing works", "tried everything"];
+  const excitementWords = ["excited", "love", "amazing", "perfect", "exactly"];
+  
+  if (urgencyWords.some(word => message.includes(word))) {
+    conversationContext.contextMemory.urgency = "high";
+  }
+  if (frustrationWords.some(word => message.includes(word))) {
+    conversationContext.contextMemory.emotion = "frustrated";
+  }
+  if (excitementWords.some(word => message.includes(word))) {
+    conversationContext.contextMemory.emotion = "excited";
+  }
+}
+
+// Extract beauty goals
+function extractBeautyGoals(message) {
+  const goals = {
+    "flawless_skin": ["flawless", "perfect skin", "clear skin"],
+    "anti_aging": ["younger", "anti-aging", "turn back time"],
+    "confidence": ["confident", "feel better", "boost"],
+    "professional": ["work", "professional", "office"],
+    "special_occasion": ["wedding", "date", "party", "event"]
+  };
+  
+  Object.keys(goals).forEach(goal => {
+    if (goals[goal].some(keyword => message.includes(keyword))) {
+      if (!conversationContext.userProfile.skinGoals.includes(goal)) {
+        conversationContext.userProfile.skinGoals.push(goal);
+      }
+    }
+  });
+}
+
+// Extract shopping behavior and budget
+function extractShoppingBehavior(message) {
+  if (message.includes("budget") || message.includes("affordable") || message.includes("cheap")) {
+    conversationContext.userProfile.budget = "budget";
+  }
+  if (message.includes("luxury") || message.includes("premium") || message.includes("high-end")) {
+    conversationContext.userProfile.budget = "premium";
+  }
+  if (message.includes("drugstore") || message.includes("pharmacy")) {
+    conversationContext.userProfile.budget = "drugstore";
+  }
+}
+
+// Ultra-Intelligent Response Generator
+function generateUltraIntelligentResponse(userMessage) {
+  const message = userMessage.toLowerCase();
+  
+  // Check if we have enough context to give comprehensive advice
+  if (hasComprehensiveContext()) {
+    return generatePersonalizedExpertAdvice(userMessage);
+  }
+  
+  // Check for specific product requests
+  if (isSpecificProductRequest(message)) {
+    return handleSpecificProductRequest(userMessage);
+  }
+  
+  // Check for problem-solving requests
+  if (isProblemSolvingRequest(message)) {
+    return handleProblemSolving(userMessage);
+  }
+  
+  // Check for routine building requests
+  if (isRoutineRequest(message)) {
+    return handleRoutineBuilding(userMessage);
+  }
+  
+  // Advanced topic detection and response
+  return handleAdvancedTopicDetection(userMessage);
+}
+
+// Check if we have enough context for expert advice
+function hasComprehensiveContext() {
+  return conversationContext.skinType && 
+         conversationContext.skinConcerns.length > 0 && 
+         conversationContext.questionCount > 2;
+}
+
+// Generate personalized expert advice based on full context
+function generatePersonalizedExpertAdvice(userMessage) {
+  let advice = `Perfect! Based on our conversation, I've learned you have ${conversationContext.skinType} skin`;
+  
+  if (conversationContext.skinConcerns.length > 0) {
+    advice += ` with concerns about ${conversationContext.skinConcerns.join(", ")}`;
+  }
+  
+  if (conversationContext.userProfile.age) {
+    advice += ` and you're in your ${conversationContext.userProfile.age}`;
+  }
+  
+  advice += ". Here's my complete L'Oréal recommendation system:\n\n";
+  
+  // Comprehensive product recommendations
+  advice += generateComprehensiveRecommendations();
+  
+  // Routine suggestions
+  advice += generatePersonalizedRoutine();
+  
+  // Pro tips based on their specific situation
+  advice += generatePersonalizedTips();
+  
+  // Follow-up based on what we haven't covered
+  advice += generateIntelligentFollowUp();
+  
+  return advice;
+}
+
+// Generate comprehensive recommendations based on full profile
+function generateComprehensiveRecommendations() {
+  let recs = "🎯 **YOUR PERSONALIZED L'ORÉAL REGIMEN:**\n\n";
+  
+  // Skincare based on type and concerns
+  recs += "🧴 **SKINCARE FOUNDATION:**\n";
+  
+  if (conversationContext.skinType === "sensitive") {
+    recs += "• **Hydra Genius Aloe Water** - Your skin will love the 70% aloe content\n";
+    recs += "• **Micellar Water All Skin Types** - Gentle cleansing without irritation\n";
+  } else if (conversationContext.skinType === "oily") {
+    recs += "• **Pure-Clay Detox Mask** - Charcoal deep-cleans without over-drying\n";
+    recs += "• **Revitalift Bright Reveal Cleanser** - Glycolic acid controls oil gently\n";
+  } else if (conversationContext.skinType === "dry") {
+    recs += "• **Hydra Genius Water-Gel** - 72-hour hydration that your skin craves\n";
+    recs += "• **Revitalift Triple Power** - Pro-Retinol + intense moisture\n";
+  }
+  
+  // Address specific concerns
+  if (conversationContext.skinConcerns.includes("aging")) {
+    recs += "• **Revitalift Derm Intensives 10% Glycolic Acid** - Professional strength anti-aging\n";
+  }
+  if (conversationContext.skinConcerns.includes("acne")) {
+    recs += "• **Pure-Clay Blemish Rescue** - Targets breakouts with salicylic acid\n";
+  }
+  
+  recs += "\n💄 **MAKEUP MATCHES:**\n";
+  
+  // Foundation based on skin type and preferences
+  if (conversationContext.skinType === "oily") {
+    recs += "• **Infallible Pro-Matte 24H** - Controls oil while looking flawless\n";
+  } else if (conversationContext.skinType === "dry") {
+    recs += "• **True Match Lumi** - Adds that healthy glow your skin needs\n";
+  } else if (conversationContext.skinType === "sensitive") {
+    recs += "• **True Match Super-Blendable** - Hypoallergenic and gentle\n";
+  }
+  
+  // Style-based recommendations
+  if (conversationContext.userProfile.makeupStyle === "natural") {
+    recs += "• **Magic Nude Liquid Powder** - Barely-there natural finish\n";
+    recs += "• **Voluminous Original Mascara** - Classic, natural enhancement\n";
+  } else if (conversationContext.userProfile.makeupStyle === "dramatic") {
+    recs += "• **Infallible Lacquer Liner 24H** - Bold, precise lines\n";
+    recs += "• **Voluminous X Fiber Mascara** - Maximum drama and length\n";
+  }
+  
+  recs += "\n";
+  return recs;
+}
+
+// Generate personalized routine
+function generatePersonalizedRoutine() {
+  let routine = "📅 **YOUR CUSTOM ROUTINE:**\n\n";
+  
+  routine += "🌅 **MORNING ";
+  if (conversationContext.userProfile.lifestyle === "busy") {
+    routine += "(5-MINUTE ROUTINE)";
+  }
+  routine += ":**\n";
+  
+  if (conversationContext.skinType === "oily") {
+    routine += "1. Gentle cleanser\n2. Oil-free moisturizer\n3. Infallible Pro-Matte foundation\n4. Setting powder\n";
+  } else if (conversationContext.skinType === "dry") {
+    routine += "1. Micellar water (gentle cleansing)\n2. Hyaluronic acid serum on damp skin\n3. Rich moisturizer\n4. True Match Lumi foundation\n";
+  } else if (conversationContext.skinType === "sensitive") {
+    routine += "1. Micellar water only\n2. Gentle moisturizer\n3. Hypoallergenic foundation\n4. Minimal powder\n";
+  }
+  
+  routine += "\n🌙 **EVENING:**\n";
+  routine += "1. Double cleanse if wearing makeup\n2. Treatment products (masks 2-3x/week)\n3. Night moisturizer\n4. Eye cream if needed\n\n";
+  
+  return routine;
+}
+
+// Generate personalized tips
+function generatePersonalizedTips() {
+  let tips = "💡 **PERSONALIZED PRO TIPS:**\n";
+  
+  if (conversationContext.skinType === "oily") {
+    tips += "• Don't skip moisturizer - it actually makes oiliness worse!\n";
+    tips += "• Use blotting papers instead of powder for touch-ups\n";
+  }
+  
+  if (conversationContext.skinConcerns.includes("acne")) {
+    tips += "• Start slowly with active ingredients - your skin needs time to adjust\n";
+    tips += "• Non-comedogenic is key - check every product label\n";
+  }
+  
+  if (conversationContext.userProfile.experience === "beginner") {
+    tips += "• Start with 3-4 basic products and build from there\n";
+    tips += "• Practice application techniques when you have time\n";
+  }
+  
+  tips += "\n";
+  return tips;
+}
+
+// Generate intelligent follow-up
+function generateIntelligentFollowUp() {
+  let followUp = "🤔 **WHAT'S NEXT?**\n";
+  
+  if (!conversationContext.userProfile.budget) {
+    followUp += "I'd love to know your budget range so I can prioritize which products to try first! ";
+  }
+  
+  if (conversationContext.skinConcerns.length === 1) {
+    followUp += "Are there any other skin concerns you'd like to address? ";
+  }
+  
+  if (!conversationContext.userProfile.experience) {
+    followUp += "What's your experience level with makeup and skincare? ";
+  }
+  
+  followUp += "I'm here to fine-tune everything for your perfect routine!";
+  
+  return followUp;
+}
+
+// Specific product request handler
+function handleSpecificProductRequest(userMessage) {
+  const message = userMessage.toLowerCase();
+  
+  if (message.includes("foundation")) {
+    return generateAdvancedFoundationAdvice();
+  }
+  if (message.includes("mascara")) {
+    return generateAdvancedMascaraAdvice();
+  }
+  if (message.includes("lipstick") || message.includes("lip")) {
+    return generateAdvancedLipAdvice();
+  }
+  if (message.includes("skincare") || message.includes("routine")) {
+    return generateAdvancedSkincareAdvice();
+  }
+  
+  return generateGenericProductAdvice();
+}
+
+// Advanced foundation advice with context
+function generateAdvancedFoundationAdvice() {
+  let advice = "🎨 **FOUNDATION EXPERTISE FOR YOU:**\n\n";
+  
+  // Customized based on their skin type
+  if (conversationContext.skinType === "oily") {
+    advice += "For your oily skin, I recommend:\n";
+    advice += "• **Infallible Pro-Matte 24H** - Oil-control that lasts all day\n";
+    advice += "• **True Match Powder Foundation** - Perfect for touch-ups\n\n";
+    advice += "💡 **Application tip:** Use a damp beauty sponge for seamless blending and oil control!\n\n";
+  } else if (conversationContext.skinType === "dry") {
+    advice += "For your dry skin, perfect options are:\n";
+    advice += "• **True Match Lumi** - Adds moisture and radiance\n";
+    advice += "• **Age Perfect Radiant Serum Foundation** - Anti-aging + hydration\n\n";
+    advice += "💡 **Application tip:** Mix with a drop of facial oil for extra glow!\n\n";
+  }
+  
+  // Shade matching intelligence
+  advice += "🎭 **SHADE MATCHING MADE EASY:**\n";
+  advice += "L'Oréal's True Match system:\n";
+  advice += "• **C (Cool)** - Pink/blue undertones\n";
+  advice += "• **N (Neutral)** - Balanced undertones\n";
+  advice += "• **W (Warm)** - Yellow/golden undertones\n\n";
+  
+  advice += "Need help finding your perfect shade or coverage level?";
+  
+  return advice;
+}
+
+// Problem-solving request handler
+function handleProblemSolving(userMessage) {
+  const message = userMessage.toLowerCase();
+  
+  if (message.includes("not working") || message.includes("problem")) {
+    return generateProblemSolvingAdvice();
+  }
+  
+  return generateGenericAdvice();
+}
+
+// Intelligent problem solving
+function generateProblemSolvingAdvice() {
+  let advice = "🔧 **PROBLEM-SOLVING MODE ACTIVATED:**\n\n";
+  
+  advice += "Let's troubleshoot together! Here are the most common issues and L'Oréal solutions:\n\n";
+  
+  advice += "**FOUNDATION ISSUES:**\n";
+  advice += "• Oxidizing? Try True Match - it has the most stable formula\n";
+  advice += "• Separating? Your skin prep might need work - use Hydra Genius primer\n";
+  advice += "• Wrong shade? True Match has 45 options - we'll find yours!\n\n";
+  
+  advice += "**SKINCARE ISSUES:**\n";
+  advice += "• Products not absorbing? Layer from thinnest to thickest consistency\n";
+  advice += "• Irritation? Switch to our gentle Hydra Genius or Age Perfect lines\n";
+  advice += "• No results? Give active ingredients 6-8 weeks to work\n\n";
+  
+  advice += "What specific problem are you experiencing? I'll give you the exact solution!";
+  
+  return advice;
+}
+
+// Advanced topic detection
+function handleAdvancedTopicDetection(userMessage) {
+  const message = userMessage.toLowerCase();
+  
+  // Color theory and matching
+  if (message.includes("color") || message.includes("shade") || message.includes("match")) {
+    return generateColorTheoryAdvice();
+  }
+  
+  // Seasonal beauty
+  if (message.includes("summer") || message.includes("winter") || message.includes("season")) {
+    return generateSeasonalAdvice();
+  }
+  
+  // Occasion-based
+  if (message.includes("wedding") || message.includes("date") || message.includes("work") || message.includes("party")) {
+    return generateOccasionAdvice(userMessage);
+  }
+  
+  // Advanced techniques
+  if (message.includes("technique") || message.includes("how to") || message.includes("application")) {
+    return generateTechniqueAdvice();
+  }
+  
+  return generateContextualResponse(userMessage);
+}
+
+// Smart redirect for off-topic
+function generateIntelligentRedirect() {
+  const redirects = [
+    "I'm your dedicated L'Oréal beauty expert! I'm passionate about helping you discover the perfect products and techniques. What beauty challenge can I solve for you today? 💄",
+    "Let's focus on making you look and feel amazing with L'Oréal! Whether it's skincare, makeup, or haircare, I have solutions for every beauty need. What would you like to explore? ✨",
+    "I'm here to be your personal L'Oréal beauty consultant! From color matching to skin concerns to application tips - I've got you covered. What beauty goal are we working on? 🌟"
+  ];
+  
+  return redirects[Math.floor(Math.random() * redirects.length)];
+}
+
+// Contextual response for complex queries
+function generateContextualResponse(userMessage) {
+  let response = "I love helping with beauty questions! ";
+  
+  if (conversationContext.skinType) {
+    response += `Since you have ${conversationContext.skinType} skin, `;
+  }
+  
+  if (conversationContext.skinConcerns.length > 0) {
+    response += `and you're concerned about ${conversationContext.skinConcerns.join(" and ")}, `;
+  }
+  
+  response += "here's what I recommend:\n\n";
+  response += generateSmartRecommendations();
+  
+  return response;
+}
+
+// Smart recommendations based on context
+function generateSmartRecommendations() {
+  let recs = "";
+  
+  if (conversationContext.skinType) {
+    recs += `For ${conversationContext.skinType} skin: `;
+    
+    if (conversationContext.skinType === "oily") {
+      recs += "Pure-Clay masks, Infallible Pro-Matte foundation, oil-free moisturizers\n";
+    } else if (conversationContext.skinType === "dry") {
+      recs += "Hydra Genius line, True Match Lumi foundation, rich moisturizers\n";
+    } else if (conversationContext.skinType === "sensitive") {
+      recs += "Gentle Micellar Water, hypoallergenic True Match, fragrance-free products\n";
+    }
+  }
+  
+  recs += "\nWhat specific aspect would you like me to dive deeper into?";
+  return recs;
+}
+
+// Check if message is specific product request
+function isSpecificProductRequest(message) {
+  const productKeywords = ["foundation", "mascara", "lipstick", "concealer", "powder", "primer", "moisturizer", "cleanser"];
+  return productKeywords.some(keyword => message.includes(keyword));
+}
+
+// Check if message is problem-solving
+function isProblemSolvingRequest(message) {
+  const problemKeywords = ["problem", "issue", "not working", "help", "fix", "wrong", "trouble"];
+  return problemKeywords.some(keyword => message.includes(keyword));
+}
+
+// Check if message is routine request
+function isRoutineRequest(message) {
+  const routineKeywords = ["routine", "steps", "order", "morning", "evening", "daily"];
+  return routineKeywords.some(keyword => message.includes(keyword));
 }
 
 // Generate welcome responses
@@ -108,126 +637,6 @@ function generateWelcomeResponse() {
     "Hey! I'm so excited to help you with all things L'Oréal beauty! I can assist with product recommendations, beauty tips, routine advice, color matching, or answer any beauty questions you have. How can I help you look and feel amazing today?"
   ];
   return welcomeResponses[Math.floor(Math.random() * welcomeResponses.length)];
-}
-
-// Generate follow-up responses based on previous topic
-function generateFollowUpResponse(lastTopic) {
-  const followUpResponses = {
-    skincare: [
-      "Great! Let's dive deeper into skincare. L'Oréal has incredible innovations like our Revitalift line with Pro-Retinol, Hydra Genius with hyaluronic acid, and Pure-Clay masks for different concerns. What specific skin issues are you dealing with, or what results are you hoping to achieve?",
-      "I love talking skincare! L'Oréal's research labs have created some amazing formulas. Are you interested in daily care routines, specific treatments, anti-aging, hydration, or something else? I can recommend the perfect products for your unique needs!"
-    ],
-    makeup: [
-      "Makeup is so fun! L'Oréal has everything from everyday essentials to glamorous looks. Are you interested in complexion products, eye makeup, lip colors, or maybe learning new techniques? I'd love to help you create your perfect look!",
-      "There's so much to explore in makeup! Whether you're a beginner looking for basics or an expert wanting to try new trends, L'Oréal has incredible options. What type of looks do you usually go for, or what would you like to experiment with?"
-    ],
-    hair: [
-      "Hair care is such a personal journey! L'Oréal Elvive has solutions for every hair type and concern. Are you dealing with damage, dryness, color-treated hair, lack of volume, or something else? I can help you build the perfect hair care routine!",
-      "I love helping with hair transformations! L'Oréal's hair care technology is amazing. Tell me about your hair - its texture, any treatments you've had, your styling routine, or challenges you're facing. We'll find the perfect products!"
-    ]
-  };
-  
-  const responses = followUpResponses[lastTopic] || [
-    "I'd love to help you more! What specific aspects would you like to know about? I'm here to give you detailed, personalized advice based on exactly what you need.",
-    "Tell me more about what you're looking for! The more details you share, the better I can recommend the perfect L'Oréal products and techniques for you."
-  ];
-  
-  return responses[Math.floor(Math.random() * responses.length)];
-}
-
-// Natural beauty response generator - handles ANY beauty question intelligently
-function generateNaturalBeautyResponse(userMessage) {
-  const message = userMessage.toLowerCase();
-  
-  // Analyze the message for beauty context and respond naturally
-  let response = "";
-  let detectedTopic = "general";
-  
-  // SKIN-RELATED RESPONSES (comprehensive and natural)
-  if (message.includes("skin") || message.includes("face") || message.includes("complexion")) {
-    if (message.includes("sensitive")) {
-      response = "Sensitive skin can be tricky, but L'Oréal has you covered! Our gentle formulations include Hydra Genius (amazing for sensitive skin hydration), dermatologist-tested Micellar Water for gentle cleansing, and fragrance-free options. The key is using products specifically designed for sensitivity. What reactions do you typically experience, and what's your current skincare routine like?";
-      detectedTopic = "sensitive_skin";
-    } else if (message.includes("dry") || message.includes("dehydrated") || message.includes("flaky") || message.includes("tight")) {
-      response = "Dry skin needs lots of love and hydration! L'Oréal's Hydra Genius line is incredible - the Water-Gel provides 72-hour moisture with hyaluronic acid. For deeper hydration, try our Revitalift moisturizers with ceramides. Age Perfect is perfect for mature dry skin too. Do you experience dryness all over your face or in specific areas? And what's your current moisturizing routine?";
-      detectedTopic = "dry_skin";
-    } else if (message.includes("oily") || message.includes("shiny") || message.includes("greasy") || message.includes("pores")) {
-      response = "Oily skin is totally manageable with the right approach! L'Oréal's Pure-Clay masks are game-changers - the Detox mask with charcoal is perfect for deep cleaning. For daily care, gentle cleansing is key (harsh products make oiliness worse!). Our oil-free moisturizers and mattifying foundations help control shine. Where do you get oiliest, and what products have you tried before?";
-      detectedTopic = "oily_skin";
-    } else if (message.includes("acne") || message.includes("breakout") || message.includes("pimple") || message.includes("blemish")) {
-      response = "Breakouts are so frustrating, but L'Oréal has effective solutions! Our Pure-Clay line targets different concerns - Detox for deep cleaning, Exfoliate for gentle renewal. The Revitalift Bright Reveal cleanser has glycolic acid for daily treatment. Non-comedogenic makeup like True Match won't clog pores. What type of breakouts do you get, and have you noticed any triggers?";
-      detectedTopic = "acne";
-    } else if (message.includes("aging") || message.includes("wrinkle") || message.includes("fine line") || message.includes("firm")) {
-      response = "Anti-aging is one of L'Oréal's specialties! Our Revitalift line has powerful ingredients like Pro-Retinol and Vitamin C. The Derm Intensives collection offers professional-strength treatments at home. Age Perfect is specifically formulated for mature skin needs. What are your main concerns - fine lines, firmness, dark spots, or overall texture? And what's your current anti-aging routine?";
-      detectedTopic = "antiaging";
-    } else {
-      response = "Skincare is so important and personal! L'Oréal has solutions for every skin type and concern. From gentle cleansers to powerful treatments, hydrating serums to protective moisturizers - we've got you covered. Tell me more about your skin - what's your type, any specific concerns, or what results are you hoping to achieve? I'd love to help you build the perfect routine!";
-      detectedTopic = "skincare";
-    }
-  }
-  
-  // MAKEUP-RELATED RESPONSES (comprehensive and natural)
-  else if (message.includes("makeup") || message.includes("foundation") || message.includes("concealer") || message.includes("powder") || message.includes("base")) {
-    if (message.includes("foundation") || message.includes("base") || message.includes("coverage")) {
-      response = "Foundation is the base of everything! L'Oréal's True Match has 45 shades with perfect undertone matching - it's like having a custom color made for you. For different needs: Infallible Pro-Matte for long wear, True Match Lumi for a radiant glow, Magic Nude for lightweight feel, Age Perfect for mature skin. What's your skin type, desired coverage level, and biggest foundation challenges?";
-      detectedTopic = "foundation";
-    } else {
-      response = "Makeup is such an art form! L'Oréal has everything from everyday essentials to bold statement pieces. Whether you're looking for the perfect everyday look, want to learn new techniques, or experiment with trends - I'm here to help! What type of makeup are you most interested in, or what look are you trying to achieve?";
-      detectedTopic = "makeup";
-    }
-  }
-  
-  // EYE MAKEUP RESPONSES
-  else if (message.includes("eyes") || message.includes("mascara") || message.includes("eyeshadow") || message.includes("liner") || message.includes("lashes")) {
-    response = "Eye makeup can completely transform your look! L'Oréal's mascaras are legendary - Voluminous Lash Paradise for drama, Telescopic for precision, waterproof options for all-day wear. Our eyeshadow palettes and liners complement perfectly. What's your eye shape, preferred style (natural vs dramatic), and any specific eye makeup challenges you face?";
-    detectedTopic = "eyes";
-  }
-  
-  // LIP RESPONSES
-  else if (message.includes("lips") || message.includes("lipstick") || message.includes("gloss") || message.includes("rouge")) {
-    response = "Lip products are so personal and expressive! L'Oréal's lip range is incredible - Rouge Signature for all-day matte comfort, Color Riche for luxurious cream, lip oils for care and shine. With over 100 shades from bold statements to perfect nudes. What finish do you prefer, what shades do you gravitate toward, and what's most important to you - longevity, comfort, or color payoff?";
-    detectedTopic = "lips";
-  }
-  
-  // HAIR RESPONSES
-  else if (message.includes("hair") || message.includes("shampoo") || message.includes("conditioner") || message.includes("elvive")) {
-    response = "Hair care is so individual! L'Oréal Elvive has targeted solutions for every concern - Total Repair 5 for damage, Color Vibrancy for color-treated hair, Volume for fine hair, Smooth for frizz control. Our formulas address specific needs, not just hair types. What's your hair like - texture, length, any chemical treatments, styling habits, and what challenges are you facing?";
-    detectedTopic = "hair";
-  }
-  
-  // COLOR/SHADE QUESTIONS
-  else if (message.includes("color") || message.includes("shade") || message.includes("match") || message.includes("tone")) {
-    response = "Color matching is such an important part of beauty! L'Oréal's True Match technology takes the guesswork out of finding your perfect shade. Whether it's foundation, lipstick, or hair color, we have incredible ranges. What are you looking to match, and do you know your undertones? I can help you find your perfect shades across our entire collection!";
-    detectedTopic = "color";
-  }
-  
-  // ROUTINE QUESTIONS
-  else if (message.includes("routine") || message.includes("steps") || message.includes("order") || message.includes("morning") || message.includes("evening")) {
-    response = "Beauty routines are so personal and should work for YOUR lifestyle! Whether you want a quick 5-minute routine or love a luxurious multi-step process, L'Oréal has products that fit. Are you looking to build a skincare routine, makeup routine, hair care regimen, or all of the above? Tell me about your current routine and what you'd like to improve or change!";
-    detectedTopic = "routine";
-  }
-  
-  // CATCH-ALL FOR ANY BEAUTY QUESTION
-  else {
-    response = generateOpenBeautyResponse(userMessage);
-    detectedTopic = "general";
-  }
-  
-  // Update conversation context
-  conversationContext.lastTopic = detectedTopic;
-  
-  return response;
-}
-
-// Open response for any beauty question not specifically categorized
-function generateOpenBeautyResponse(userMessage) {
-  const openResponses = [
-    `That's a great question! L'Oréal has over 100 years of beauty innovation, so I'm confident we have solutions for you. Could you tell me a bit more about what you're looking for? The more details you share, the better I can help you find the perfect products and advice!`,
-    `I love that question! Beauty is so individual, and L'Oréal's extensive range covers virtually every beauty need. To give you the most helpful recommendations, could you share more about your specific situation, concerns, or what you're hoping to achieve?`,
-    `That's exactly the kind of question I'm here for! L'Oréal creates products for every beauty challenge and preference. Help me understand more about your needs - your skin/hair type, current routine, lifestyle, or what results you're looking for - so I can give you personalized advice!`,
-    `Great question! L'Oréal's research and development teams work constantly to solve beauty challenges like yours. I'd love to help you find the perfect solution! Could you give me more context about your situation so I can recommend the best products and techniques for you?`
-  ];
-  return openResponses[Math.floor(Math.random() * openResponses.length)];
 }
 
 // Function to detect off-topic conversations
